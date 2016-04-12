@@ -8,7 +8,7 @@ output: html_document
 
 ## Exercise 1:
 
-Write a function (f) that takes a vector of numbers, **x**, and returns a vector of numbers such that each element containing the product of every element of x except the element of x with the same index. 
+Write a function (f) that takes a vector of numbers, **x**, and returns a vector of *positive*/non-zero numbers such that each element containing the product of every element of x except the element of x with the same index. 
 
 
 ### Example 
@@ -23,14 +23,33 @@ Write a function (f) that takes a vector of numbers, **x**, and returns a vector
 
 ```{r}
 f <- function(x) {
+
+  #ensure all vector components are non-zero numbers (default to 1 on zero)
+  x <- ifelse(x==0,1,x)
   
-  # ...
+  #create empty vector to store results
+  results <- c()
   
+  #traverse the vector, perform computation, and add result to resulting vector
+  for (i in 1:length(x)){
+    element = prod(x)/x[i]
+    results <- c(results,element)
+  }
+  
+  #convert all vector values to absolute value and return
+  return(abs(results))
 }
 
+x <- c(1,5,2,8)
+f(x)
+
+x <- c(1,0,2,8)
+f(x)
+
+x <- c(-1,0,-2,-8)
+f(x)
 ```
     
-
 
 ## Exercise 2
 
