@@ -69,7 +69,24 @@ Write a function f(x) to accept an integer vector, and returns a vector with tho
 
 ```{r}
 f <- function(x) {
-  # ...
-  
+  #create empty vector to store results
+  results <- c()
+
+  #conditions for FizzBuzz, Fizz, Buzz, none
+  for (n in x){
+    if (n %% 3 == 0 && n %% 5 == 0){
+      results <- c(results,"FizzBuzz")
+    }else if(n %% 3 == 0){
+      results <- c(results,"Fizz")
+    } else if (n %% 5 == 0){
+      results <- c(results, "Buzz")
+    }else {
+      results <- c(results,n)
+    }
+  }
+  return(results)
 }
+
+x <- 1:20
+f(1:20)
 ```
