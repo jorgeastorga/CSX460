@@ -50,7 +50,7 @@ naive_guess <- mean(dat$FE)
 - plot FE (Fuel Econonomy) vs. EngDisp. Plot the naive guess.
 
 ```{r}
-# ... ggplot2  
+qplot(x=dat$EngDispl, y=dat$FE) + geom_hline(yintercept=naive_guess, color="red")
 ```
 
 - Sample 10 observations from `dat`
@@ -65,7 +65,7 @@ set.seed(314)
 samp <- dat %>% dplyr::sample_n(10) 
 
 # Plots 
-...
+qplot(y=samp$FE, x=samp$EngDispl) + geom_hline(yintercept = naive_guess, color="red")
 
 
 ```
@@ -89,7 +89,7 @@ rmse <- function(y,yhat) {
 }
 
 mae <- function(y, yhat) {
-  # ...
+  (y - yhat) %>% abs() %>% mean()
 }
 
 medae <- function(y, yhat) { 
@@ -109,7 +109,7 @@ Use these functions to evaluate the loss/performance of:
 
 
 ```{r}
-fit.2010 <- ... 
+fit.2010 <- lm(FE ~ EngDispl, data=cars2010)
 ```
 
 - Use your functions to evaluate the training error
@@ -119,13 +119,14 @@ fit.2010 <- ...
 
 ```{r}
 
-y.2010 <- ... 
-y.2011 <- ... 
-y.2012 <- ...
+y.2010 <- predict.lm(fit.2010, data=cars2010)  
+y.2011 <- predict.lm(fit.2010, data=cars2011)
+y.2012 <- predict.lm(fit.2010, data=cars2012)
 
-rmse.2010 <- ...
-rmse.2011 <- ...
-rmse.2012 <- ... 
+#couldn't get past this part
+#rmse.2010 <- rmse(cars2010$FE, y.2010$FE)
+#rmse.2011 <- ...
+#rmse.2012 <- ... 
 
 ```
 
