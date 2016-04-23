@@ -43,6 +43,9 @@ dat <- bind_rows( cars2010, cars2011, cars2012)    # Define
 - What is a good "naive guess" of FE? Show your work
 
 ```{r}
+# For all intents and purposes, the mean can actually me a model itself (just a constant). It can be used
+# as an initial way to make sure your model is doing better than the the mean. If it's not, you may have to figure
+# out how to get a better model. 
 naive_guess <- mean(dat$FE)
 ```
 
@@ -61,7 +64,9 @@ qplot(x=dat$EngDispl, y=dat$FE) + geom_hline(yintercept=naive_guess, color="red"
 
 set.seed(314) 
 
-# Sample 
+# Sample #used to learn how to take a sample of the overall data. 
+# In a bigger data set, this is important so that we don't have to deal with the entire dataset at once. You may get 100-1000 values
+# just to get n undertanding of the data.
 samp <- dat %>% dplyr::sample_n(10) 
 
 # Plots 
@@ -92,14 +97,21 @@ mae <- function(y, yhat) {
   (y - yhat) %>% abs() %>% mean()
 }
 
+#not sure what the formula for this is (is it the same as median absolute deviation)
 medae <- function(y, yhat) { 
   # ...
 }
+
+#using the functions to evaluate loss/performance of naive guess
+rmse_naive_guess <- rmse(dat$FE, naive_guess)
+mae_naive_guess <- rmse(dat$FE, naive_guess)
 
 ```
 
 Use these functions to evaluate the loss/performance of:
 - the naive guess
+- this is mainly done by getting the rmse and mae. The closer to 0, the better. 
+- getting the rmse for two different models is useful since you can use the numbers to compare two models.
 
 
 
@@ -107,8 +119,8 @@ Use these functions to evaluate the loss/performance of:
 
 - Use `lm` to create a linear model fitting the relationship between FE and EngDispl for the cars2010 data set
 
-
 ```{r}
+#Creating a model function using the cars2010 dataset as the training data
 fit.2010 <- lm(FE ~ EngDispl, data=cars2010)
 ```
 
@@ -119,14 +131,20 @@ fit.2010 <- lm(FE ~ EngDispl, data=cars2010)
 
 ```{r}
 
-y.2010 <- predict.lm(fit.2010, data=cars2010)  
-y.2011 <- predict.lm(fit.2010, data=cars2011)
-y.2012 <- predict.lm(fit.2010, data=cars2012)
+#remember to use the newdata parameter for the predict function
+yhat.2010 <- predict(fit.2010, newdata=cars2010)  #don't really need to do this, but left as is
+yhat.2011 <- predict(fit.2010, newdata=cars2011) #predict values of FE for 2011 cars using the cars2011 data as input (uses EngDispl)
+yhat.2012 <- predict(fit.2010, newdata=cars2012) #predict values of FE for 2011 cars using the cars2012 data as input (uses EngDispl)
 
-#couldn't get past this part
-#rmse.2010 <- rmse(cars2010$FE, y.2010$FE)
-#rmse.2011 <- ...
-#rmse.2012 <- ... 
+#Evaluate the training error. This is mainly used to evaluate your model against the actual data.
+rmse.2010 <- rmse(cars2010$FE, y.2010) # evaluating the training error (how far off is the training data from the predicted data)
+
+#compare the actual data in cars2011 vs. the predicted values (yhat.2011 or yhat.2012) and this gives you the error
+# Ideal is as close to 0 as possible
+rmse.2011 <- rmse(cars2011$FE, y.2011) 
+rmse.2012 <- rmse(cars2012$FE, y.2012)
+
+#The next thing to do is compare the rmse (model performance) against another candidate model
 
 ```
 
@@ -146,6 +164,6 @@ rmse.2012
 
 
 ```{r}
-fit.2010 <- ...
-betas <- ...
+fit.2010 <- lm(FE ~ EngDispl + NumCyl + VarValveTiming, data=cars2011)
+betas <- fit.2010$coefficients
 ```

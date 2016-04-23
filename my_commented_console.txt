@@ -1,0 +1,274 @@
+model <- lm(FE ~ EngDispl)
+model <- lm(FE ~ EngDispl, dat)
+
+###### Install and load the needed packages to do the exercise
+packs <-  c('AppliedPredictiveModeling', 'ggplot2', 'magrittr', 'dplyr')
+for( nm in packs ) {
+if( ! nm  %in% installed.packages()[,1]  ) install.packages(nm)
+library(nm)
+}
+
+####### Load the Fuel Economy dataset into the environment
+data(FuelEconomy)
+
+###### Join the cars2010, cars2011, and cars2012 data tables into a single dataset
+dat <- dplyr::bind_rows(cars2010, cars2011, cars2012)    # Define dat
+
+##### Calculate mean of the fuel economy to get a mean for the fuel economy across all vehicles
+naive_guess <- dat$fe %>% mean
+
+##### Create a quick scatter plot of the Fuel Economy (FE) vs. Engine Displacement (EngDispl) to understand the data.
+qplot( y=dat$FE, x=dat$EngDispl )
+
+##### Get help on adding lines to a plot. 
+?geom_abline
+
+##### Print out all the Fuel Economy (MPG)
+dat$FE
+
+##### Print out the value of variable naive_guess
+naive_guess
+
+##### Create a quick scatter plot of Engine Displacement (EngDisp) vs. Fuel Economy (FE) and add the mean value to the plot
+qplot( y=dat$FE, x=dat$EngDispl ) + geom_hline(yintercept=naive_guess)
+
+##### Create a quick scatter plot of Engine Displacement (EngDisp) vs. Fuel Economy (FE) and add the mean value to the plot.
+##### However, this time color the mean function/model red.
+qplot( y=dat$FE, x=dat$EngDispl ) + geom_hline(yintercept=naive_guess, color="red")
+
+
+##### OPTIONAL: I can assign the quick plot to a variable and then just briefly add to that base plot (see gg below)
+gg <- qplot( y=dat$FE, x=dat$EngDispl )
+gg + geom_hline(yintercept=naive_guess, color="red")
+
+##### Setting seed for randon number generation in R
+##### See ?set.seed for documentation and not sure why the instructor used 314 as the seed.
+set.seed(314)
+
+##### SAMPLE: Get a random set of rows from the sample of the entire Fuel Economy data set.
+samp <- dat %>% sample_n(10)
+samp
+
+##### (see below for more detailed graphing)
+gg <- samp %>%
+ggplot( aes(x=EngDispl,y=FE) ) +
+geom_point(size=2.5) +
+scale_x_continuous( limits=c(0,10) )
+
+##### Plot the values of sample using ggplot and add the naive guess to the chart
+gg <- samp  %>% ggplot( aes(x=EngDispl, y=FE) ) ## Creates a ggplot object initialized with the sample data and with
+gg <- ggplot(samp, aes(x=EngDispl, y=FE)) + geom_point(size=2.5) ## Same as above but adds the actual points to the graph
+gg <- ggplot(data=samp, aes(x=EngDispl, y=FE)) + geom_point(size=2.5) + scale_x_continuous(limits=c(0,10)) # Same as above with limits on x axis 0-10
+
+##### Add the naive guess to the plot
+gg + geom_hline(yintercept=naive_guess, color="red")
+
+##### DEFINE THE LINEAR MODEL
+model <- lm(FE ~ EngDispl, dat)
+model
+fit.2010 <- lm( FE ~ EngDispl, data=cars2010 )
+y.2011 <- predict( fit.2010, data=cars2011 )
+
+##### DEFINE THE RMSE FUNCTION
+rmse <- function(y,yhat) {
+(y - yhat)^2 %>% mean %>% sqrt
+}
+
+fit.2010 %>% predict(cars2010)
+y.2010 <- fit.2010 %>% predict(cars2010)
+
+rmse( 4,2)
+rmse( c(4,2),c(2,1)
+)
+
+rmse( 2,1)
+summary(fit.2010)
+
+fit.2010 <- . lm( FE ~ EngDispl, data=cars2010 )
+... = NULL
+... = NULL
+f(...) 1
+f <- function(x,...)
+list(...)
+f(1)
+list(NULL)
+y.2010 <- fit.2010 %>% predict(cars2010)
+y.2011 <- fit.2010 %>% predict(cars2011)
+y.2012 <- fit.2010 %>% predict(cars2012)
+
+########## #####  NOT RELEVANT TO CLASS ########## ##### ##### ##### ##### 
+
+
+########## #####  NOT RELEVANT TO CLASS ########## ##### ##### ##### ##### 
+
+
+
+naive_guess <- mean(dat$FE)
+
+samp  %>% ggplot( aes(x=EngDispl, y=FE) ) + geom_point() + geom_hline(yintercept=naive_guess)
+samp  %>% ggplot( aes(x=EngDispl, y=FE) ) + geom_point() + geom_hline(yintercept=naive_guess, color="red")
+samp  %>% ggplot( aes(x=EngDispl, y=FE) ) + geom_point() + geom_hline(yintercept=naive_guess, color="red") + stat_smooth(  method="lm", se =FALSE)
+
+
+dat$FE - naive_guess
+qplot( dat$FE - naive_guess )
+
+
+( dat$FE - naive_guess )  %>% sum
+( samp$FE - naive_guess )  %>% qplot
+
+
+( samp$FE - naive_guess )  %>% qplot(.)
+( samp$FE - naive_guess )  %>% {qplot(.)}
+
+qplot( samp$FE - naive_guess )
+qplot( dat$FE - naive_guess )
+
+######### FIND THE RESIDUALS
+( dat$FE - naive_guess )
+( samp$FE - naive_guess )
+( samp$FE - naive_guess )   %>% sum()
+( dat$FE - naive_guess )   %>% sum()
+( dat$FE - naive_guess )^2
+( dat$FE - naive_guess )^2  %>% sum
+( dat$FE - naive_guess )^2  %>% sum   %>% sqrt
+( dat$FE - naive_guess )^2  %>% mean   %>% sqrt
+RMSE
+( dat$FE - naive_guess )  %>% abs  %>% mean
+
+##### DEFINE THE RMSE FUNCTION
+rmse <- function(y,yhat) {
+( y - yhat )^2  %>% mean   %>% sqrt
+}
+
+##### UNDERSTAND HOW TO FIND THE LINEAR MODEL LINE
+?lm
+
+
+##### FIND A LM fitting Fuel Efficiency and Engine Displacement
+
+fit.dat <- lm( FE ~ EngDispl, data=dat )
+fit.dat ##prints out the coefficients for the model or formula
+#y axis crosses at 51.840
+> #-4.792 (for every unit of engine displacement)
+# best line that fits through these data points (the sample)
+ #coefficients are the betas
+#b1 = -4.792
+#b0 = intercept (51.840)
+
+
+
+##### FIND A LM fitting Fuel Efficiency as a function of Engine Displacement and Number of Cylinders
+fit.dat <- lm( FE ~ EngDispl + NumCyl, data=dat )
+fit.dat
+dat  %>% names ##prints out the different columsn for the dat data sample
+
+##### FIND A LM fitting Fuel Efficiency as a function of Engine Displacement, Number of Cylinders, and NumGears
+fit.dat <- lm( FE ~ EngDispl + NumCyl + NumGears, data=dat )
+fit.dat
+
+
+##### FIND A LM fitting Fuel Efficiency as a function of all vehicle characteristics
+> #the above function will take all columns as coefficients
+fit.dat <- lm( FE ~ . , data=dat )
+fit.dat
+
+##### FIND A LM fitting Fuel Efficiency as a function of CarlineClassDesc and EngineDisplacement
+fit.dat <- lm( FE ~ CarlineClassDesc , data=dat )
+fit.dat <- lm( FE ~ CarlineClassDesc + EngDispl, data=dat )
+fit.dat
+
+
+
+
+####  SEEMS LIKE IT FINDS A FUNCTION WITH ALL THE POSSIBLE VALUES OF THE CarlineClassDesc column as coefficients
+dat  %>% select( CarlineClassDesc )
+dat  %>% select( CarlineClassDesc )  %>% table
+
+
+fit_dat
+fit.dat <- lm( FE ~ NumCyl + EngDispl, data=dat )
+
+
+fit.dat  %>% summary()
+
+#residuals are the vectors of errors
+
+
+#you can plot the residuals
+#this is a good model
+# may keep everything with one asterisk or above, everything else, not a good fit
+resid(fit.dat)  %>% qplot
+resid(fit.dat) #prints out the residuals
+resid(fit.dat)    %>% plot #puts in a different scatter plot
+resid(fit.dat)    %>% hist #put residuals in histogram
+resid(fit.dat)    %>% truehist #outputs an error
+resid(fit.dat)    %>% qplot
+resid(fit.dat)    %>% class()
+resid(fit.dat)    %>% qplot(x=.)
+resid(fit.dat)-> r
+r
+qplot(r)
+r  %>% length()
+
+
+##### FIND THE RMSE between the actual observed values in FE and the fitted values using the model
+rmse(dat$FE, fit.dat$fitted.values)
+fit  %>% summary()
+fit.dat  %>% summary()
+rmse(dat$FE, fit.dat$fitted.values)
+
+
+
+##### FINDING ANOTHER MODEL FIT with more variables
+fit.dat <- lm( FE ~ NumCyl + EngDispl + AirAspirationMethod, data=dat )
+fit.dat  %>% summary()
+
+
+fit.dat <- lm( FE ~ ., data=dat )
+fit.dat  %>% summary()
+
+
+??stepAIC
+
+fit.dat <- lm( FE ~ NumCyl + EngDispl + AirAspirationMethod, data=dat )
+yhat <- predict( fit.dat, data=cars2012 )
+yhat
+qplot( x=cars2012$FE, y=yhat)
+
+
+
+yhat <- predict( fit.dat, data=cars2012 )
+yhat
+yhat  %>% length
+
+
+
+nrow(cars2012)
+yhat <- predict( fit.dat, data=cars2012 )
+yhat
+yhat  %>% length
+yhat <- predict.lm( fit.dat, data=cars2012 )
+yhat <- predict.lm( fit.dat, newdata = cars2012 )
+
+
+qplot( x=cars2012$FE, y=yhat)
+qplot( y=cars2012$FE, x=yhat)
+qplot( y=cars2012$FE, x=yhat) + geom_abline(yintercept=0, slope=1)
+
+
+fit.dat  %>% str
+fit.dat  %>% str  %>% names
+fit.dat  %>% names()
+coefficients(fit.dat)
+dat
+factor( 1,2,3)
+factor( "a", "b", "c", "a")
+factor( c("a", "b", "c", "a"))
+fit.dat  %>% summary()
+save.history(file="console-output.txt")
+?history
+savehistory(file="console-output.txt")
+getwd()
+history()
+savehistory("~/csx460/instructor/lectures/02-ml-fundamentals/console-output.txt")
